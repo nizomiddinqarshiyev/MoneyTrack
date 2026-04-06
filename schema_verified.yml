@@ -1,0 +1,1219 @@
+openapi: 3.0.3
+info:
+  title: MoneyTrack API
+  version: 1.0.0
+  description: Financial tracking and biometric antifraud system API
+paths:
+  /api/antifraud/register/:
+    post:
+      operationId: api_antifraud_register_create
+      description: |-
+        Registers a new face encoding for the user.
+        Expects 'face_encoding' as a list of 128/512 floats.
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FaceEncodingRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/FaceEncodingRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/FaceEncodingRequest'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FaceVerificationResponse'
+          description: ''
+  /api/antifraud/verify/:
+    post:
+      operationId: api_antifraud_verify_create
+      description: Verifies a face encoding against the stored profile.
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FaceEncodingRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/FaceEncodingRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/FaceEncodingRequest'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FaceVerificationResponse'
+          description: ''
+  /api/auth/login/:
+    post:
+      operationId: api_auth_login_create
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/LoginRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/LoginRequest'
+        required: true
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Login'
+          description: ''
+  /api/auth/register/:
+    post:
+      operationId: api_auth_register_create
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RegisterRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/RegisterRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/RegisterRequest'
+        required: true
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Register'
+          description: ''
+  /api/auth/send-otp/:
+    post:
+      operationId: api_auth_send_otp_create
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SendOTPRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/SendOTPRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/SendOTPRequest'
+        required: true
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+  /api/auth/verify-otp/:
+    post:
+      operationId: api_auth_verify_otp_create
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/VerifyOTPRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/VerifyOTPRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/VerifyOTPRequest'
+        required: true
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: {}
+          description: ''
+  /api/users/{id}/:
+    get:
+      operationId: api_users_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+      tags:
+      - api
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+          description: ''
+    put:
+      operationId: api_users_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserUpdateRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/UserUpdateRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/UserUpdateRequest'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserUpdate'
+          description: ''
+    patch:
+      operationId: api_users_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+        required: true
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedUserUpdateRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedUserUpdateRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedUserUpdateRequest'
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserUpdate'
+          description: ''
+  /api/users/change-password/:
+    post:
+      operationId: api_users_change_password_create
+      tags:
+      - api
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ChangePasswordRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ChangePasswordRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ChangePasswordRequest'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ChangePassword'
+          description: ''
+  /api/v1/analytics/summary/:
+    get:
+      operationId: analytics_summary_retrieve
+      tags:
+      - analytics
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          description: No response body
+  /api/v1/currency/rates/:
+    get:
+      operationId: currency_rates_retrieve
+      tags:
+      - currency
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          description: No response body
+  /api/v1/transactions/categories/:
+    get:
+      operationId: transactions_categories_list
+      parameters:
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      tags:
+      - transactions
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Category'
+          description: ''
+  /api/v1/transactions/categories/{id}/:
+    get:
+      operationId: transactions_categories_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this category.
+        required: true
+      tags:
+      - transactions
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Category'
+          description: ''
+  /api/v1/transactions/transactions/:
+    get:
+      operationId: transactions_transactions_list
+      parameters:
+      - in: query
+        name: category
+        schema:
+          type: integer
+      - in: query
+        name: created_at__gte
+        schema:
+          type: string
+          format: date-time
+      - in: query
+        name: created_at__lte
+        schema:
+          type: string
+          format: date-time
+      - name: ordering
+        required: false
+        in: query
+        description: Which field to use when ordering the results.
+        schema:
+          type: string
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      - in: query
+        name: type
+        schema:
+          type: string
+          enum:
+          - expense
+          - income
+          - transfer
+        description: |-
+          * `income` - Income
+          * `expense` - Expense
+          * `transfer` - Transfer
+      tags:
+      - transactions
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Transaction'
+          description: ''
+    post:
+      operationId: transactions_transactions_create
+      tags:
+      - transactions
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TransactionRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/TransactionRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/TransactionRequest'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Transaction'
+          description: ''
+  /api/v1/transactions/transactions/{id}/:
+    get:
+      operationId: transactions_transactions_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this transaction.
+        required: true
+      tags:
+      - transactions
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Transaction'
+          description: ''
+    put:
+      operationId: transactions_transactions_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this transaction.
+        required: true
+      tags:
+      - transactions
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TransactionRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/TransactionRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/TransactionRequest'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Transaction'
+          description: ''
+    patch:
+      operationId: transactions_transactions_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this transaction.
+        required: true
+      tags:
+      - transactions
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedTransactionRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedTransactionRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedTransactionRequest'
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Transaction'
+          description: ''
+    delete:
+      operationId: transactions_transactions_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this transaction.
+        required: true
+      tags:
+      - transactions
+      security:
+      - jwtAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/v1/transactions/transactions/grouped-by-day/:
+    get:
+      operationId: transactions_transactions_grouped_by_day_list
+      parameters:
+      - in: query
+        name: category
+        schema:
+          type: integer
+      - in: query
+        name: created_at__gte
+        schema:
+          type: string
+          format: date-time
+      - in: query
+        name: created_at__lte
+        schema:
+          type: string
+          format: date-time
+      - name: ordering
+        required: false
+        in: query
+        description: Which field to use when ordering the results.
+        schema:
+          type: string
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      - in: query
+        name: type
+        schema:
+          type: string
+          enum:
+          - expense
+          - income
+          - transfer
+        description: |-
+          * `income` - Income
+          * `expense` - Expense
+          * `transfer` - Transfer
+      tags:
+      - transactions
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Transaction'
+          description: ''
+  /api/v1/wallets/:
+    get:
+      operationId: wallets_list
+      parameters:
+      - name: search
+        required: false
+        in: query
+        description: A search term.
+        schema:
+          type: string
+      tags:
+      - wallets
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Wallet'
+          description: ''
+    post:
+      operationId: wallets_create
+      tags:
+      - wallets
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WalletRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/WalletRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/WalletRequest'
+      security:
+      - jwtAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Wallet'
+          description: ''
+  /api/v1/wallets/{id}/:
+    get:
+      operationId: wallets_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this wallet.
+        required: true
+      tags:
+      - wallets
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Wallet'
+          description: ''
+    put:
+      operationId: wallets_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this wallet.
+        required: true
+      tags:
+      - wallets
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WalletRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/WalletRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/WalletRequest'
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Wallet'
+          description: ''
+    patch:
+      operationId: wallets_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this wallet.
+        required: true
+      tags:
+      - wallets
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedWalletRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedWalletRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedWalletRequest'
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Wallet'
+          description: ''
+    delete:
+      operationId: wallets_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this wallet.
+        required: true
+      tags:
+      - wallets
+      security:
+      - jwtAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/v1/wallets/{id}/topup/:
+    post:
+      operationId: wallets_topup_create
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this wallet.
+        required: true
+      tags:
+      - wallets
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TopUpRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/TopUpRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/TopUpRequest'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Wallet'
+          description: ''
+components:
+  schemas:
+    CardTypeEnum:
+      enum:
+      - uzcard
+      - humo
+      - visa
+      - virtual
+      type: string
+      description: |-
+        * `uzcard` - Uzcard
+        * `humo` - Humo
+        * `visa` - Visa
+        * `virtual` - Virtual
+    Category:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        name:
+          type: string
+          maxLength: 100
+        slug:
+          type: string
+          maxLength: 50
+          pattern: ^[-a-zA-Z0-9_]+$
+        icon:
+          type: string
+          nullable: true
+          maxLength: 50
+      required:
+      - id
+      - name
+      - slug
+    ChangePassword:
+      type: object
+      properties:
+        old_password:
+          type: string
+        new_password:
+          type: string
+          minLength: 8
+      required:
+      - new_password
+      - old_password
+    ChangePasswordRequest:
+      type: object
+      properties:
+        old_password:
+          type: string
+          minLength: 1
+        new_password:
+          type: string
+          minLength: 8
+      required:
+      - new_password
+      - old_password
+    FaceEncodingRequest:
+      type: object
+      properties:
+        face_encoding:
+          type: array
+          items:
+            type: number
+            format: double
+          description: A list of 128 or 512 floats representing the face encoding.
+          minItems: 128
+      required:
+      - face_encoding
+    FaceVerificationResponse:
+      type: object
+      properties:
+        status:
+          type: string
+        message:
+          type: string
+      required:
+      - message
+      - status
+    Login:
+      type: object
+      properties:
+        phone_number:
+          type: string
+      required:
+      - phone_number
+    LoginRequest:
+      type: object
+      properties:
+        phone_number:
+          type: string
+          minLength: 1
+        password:
+          type: string
+          writeOnly: true
+          minLength: 1
+      required:
+      - password
+      - phone_number
+    PatchedTransactionRequest:
+      type: object
+      properties:
+        wallet:
+          type: integer
+        type:
+          $ref: '#/components/schemas/TypeEnum'
+        amount:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: -9223372036854775808
+          format: int64
+        category:
+          type: integer
+          nullable: true
+        description:
+          type: string
+        receiver:
+          type: integer
+          nullable: true
+        receiver_wallet:
+          type: integer
+          nullable: true
+    PatchedUserUpdateRequest:
+      type: object
+      properties:
+        full_name:
+          type: string
+          minLength: 1
+          maxLength: 255
+        main_currency:
+          type: string
+          minLength: 1
+          maxLength: 3
+        notifications_enabled:
+          type: boolean
+    PatchedWalletRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          minLength: 1
+          maxLength: 100
+        card_type:
+          $ref: '#/components/schemas/CardTypeEnum'
+        card_number:
+          type: string
+          writeOnly: true
+          nullable: true
+          maxLength: 16
+        expire_date:
+          type: string
+          nullable: true
+          maxLength: 5
+        cvv:
+          type: string
+          writeOnly: true
+          nullable: true
+          maxLength: 3
+        currency:
+          type: string
+          minLength: 1
+          maxLength: 3
+        is_default:
+          type: boolean
+        is_active:
+          type: boolean
+    Register:
+      type: object
+      properties:
+        phone_number:
+          type: string
+          pattern: ^\+998\d{9}$
+          maxLength: 13
+        email:
+          type: string
+          format: email
+          nullable: true
+          maxLength: 254
+        full_name:
+          type: string
+          maxLength: 255
+      required:
+      - full_name
+      - phone_number
+    RegisterRequest:
+      type: object
+      properties:
+        phone_number:
+          type: string
+          minLength: 1
+          pattern: ^\+998\d{9}$
+          maxLength: 13
+        email:
+          type: string
+          format: email
+          nullable: true
+          maxLength: 254
+        full_name:
+          type: string
+          minLength: 1
+          maxLength: 255
+        password:
+          type: string
+          writeOnly: true
+          minLength: 1
+      required:
+      - full_name
+      - password
+      - phone_number
+    SendOTPRequest:
+      type: object
+      properties:
+        email:
+          type: string
+          format: email
+          minLength: 1
+      required:
+      - email
+    TopUpRequest:
+      type: object
+      properties:
+        amount:
+          type: string
+          format: decimal
+          pattern: ^-?\d{0,18}(?:\.\d{0,2})?$
+      required:
+      - amount
+    Transaction:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        wallet:
+          type: integer
+        type:
+          $ref: '#/components/schemas/TypeEnum'
+        amount:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: -9223372036854775808
+          format: int64
+        category:
+          type: integer
+          nullable: true
+        category_name:
+          type: string
+          readOnly: true
+        description:
+          type: string
+        receiver:
+          type: integer
+          nullable: true
+        receiver_wallet:
+          type: integer
+          nullable: true
+        sender_name:
+          type: string
+          readOnly: true
+        sender_phone:
+          type: string
+          readOnly: true
+        receiver_name:
+          type: string
+          readOnly: true
+        receiver_phone:
+          type: string
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - amount
+      - category_name
+      - created_at
+      - id
+      - receiver_name
+      - receiver_phone
+      - sender_name
+      - sender_phone
+      - type
+      - wallet
+    TransactionRequest:
+      type: object
+      properties:
+        wallet:
+          type: integer
+        type:
+          $ref: '#/components/schemas/TypeEnum'
+        amount:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: -9223372036854775808
+          format: int64
+        category:
+          type: integer
+          nullable: true
+        description:
+          type: string
+        receiver:
+          type: integer
+          nullable: true
+        receiver_wallet:
+          type: integer
+          nullable: true
+      required:
+      - amount
+      - type
+      - wallet
+    TypeEnum:
+      enum:
+      - income
+      - expense
+      - transfer
+      type: string
+      description: |-
+        * `income` - Income
+        * `expense` - Expense
+        * `transfer` - Transfer
+    User:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        phone_number:
+          type: string
+          readOnly: true
+        full_name:
+          type: string
+          maxLength: 255
+        main_currency:
+          type: string
+          maxLength: 3
+        notifications_enabled:
+          type: boolean
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - created_at
+      - full_name
+      - id
+      - phone_number
+    UserUpdate:
+      type: object
+      properties:
+        full_name:
+          type: string
+          maxLength: 255
+        main_currency:
+          type: string
+          maxLength: 3
+        notifications_enabled:
+          type: boolean
+      required:
+      - full_name
+    UserUpdateRequest:
+      type: object
+      properties:
+        full_name:
+          type: string
+          minLength: 1
+          maxLength: 255
+        main_currency:
+          type: string
+          minLength: 1
+          maxLength: 3
+        notifications_enabled:
+          type: boolean
+      required:
+      - full_name
+    VerifyOTPRequest:
+      type: object
+      properties:
+        email:
+          type: string
+          format: email
+          minLength: 1
+        code:
+          type: string
+          minLength: 1
+          maxLength: 6
+      required:
+      - code
+      - email
+    Wallet:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        name:
+          type: string
+          maxLength: 100
+        card_type:
+          $ref: '#/components/schemas/CardTypeEnum'
+        expire_date:
+          type: string
+          nullable: true
+          maxLength: 5
+        balance:
+          type: integer
+          readOnly: true
+        currency:
+          type: string
+          maxLength: 3
+        is_default:
+          type: boolean
+        is_active:
+          type: boolean
+        masked_number:
+          type: string
+          readOnly: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - balance
+      - created_at
+      - id
+      - masked_number
+    WalletRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          minLength: 1
+          maxLength: 100
+        card_type:
+          $ref: '#/components/schemas/CardTypeEnum'
+        card_number:
+          type: string
+          writeOnly: true
+          nullable: true
+          maxLength: 16
+        expire_date:
+          type: string
+          nullable: true
+          maxLength: 5
+        cvv:
+          type: string
+          writeOnly: true
+          nullable: true
+          maxLength: 3
+        currency:
+          type: string
+          minLength: 1
+          maxLength: 3
+        is_default:
+          type: boolean
+        is_active:
+          type: boolean
+  securitySchemes:
+    jwtAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

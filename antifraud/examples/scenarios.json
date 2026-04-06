@@ -1,0 +1,62 @@
+[
+  {
+    "scenario": "Normal Transaction",
+    "description": "A low-risk transaction within a trusted corridor.",
+    "payload": {
+      "transaction_id": "tx_normal_001",
+      "user_id": "user_123",
+      "sender_card": "4444555566667777",
+      "receiver_card": "8888999900001111",
+      "amount": 500000.0,
+      "currency": "UZS",
+      "timestamp": "2026-03-17T15:00:00",
+      "sender_country": "UZ",
+      "receiver_country": "RU",
+      "ip_address": "178.218.201.5",
+      "device_id": "dev_abc_123",
+      "channel": "MOBILE_APP"
+    },
+    "expected_decision": "APPROVED",
+    "logic": "Matches TrustedCorridor rule (-10 score)."
+  },
+  {
+    "scenario": "Velocity Flood (High Frequency)",
+    "description": "User makes more than 5 transactions in 1 minute.",
+    "payload": {
+      "transaction_id": "tx_velocity_006",
+      "user_id": "user_123",
+      "sender_card": "4444555566667777",
+      "receiver_card": "8888999900001111",
+      "amount": 10000.0,
+      "currency": "UZS",
+      "timestamp": "2026-03-17T15:01:00",
+      "sender_country": "UZ",
+      "receiver_country": "UZ",
+      "ip_address": "178.218.201.5",
+      "device_id": "dev_abc_123",
+      "channel": "MOBILE_APP"
+    },
+    "expected_decision": "OTP_REQUIRED or DECLINED",
+    "logic": "Matches HighFrequency1m rule (+25 score)."
+  },
+  {
+    "scenario": "Impossible Travel",
+    "description": "Transaction from a different country within 1 hour.",
+    "payload": {
+      "transaction_id": "tx_geo_002",
+      "user_id": "user_123",
+      "sender_card": "4444555566667777",
+      "receiver_card": "8888999900001111",
+      "amount": 1000000.0,
+      "currency": "UZS",
+      "timestamp": "2026-03-17T15:30:00",
+      "sender_country": "US",
+      "receiver_country": "UZ",
+      "ip_address": "192.168.1.1",
+      "device_id": "dev_abc_123",
+      "channel": "WEB"
+    },
+    "expected_decision": "DECLINED",
+    "logic": "Matches GeoAnomaly rule (+30 score) + potentially NewDevice (+20)."
+  }
+]
