@@ -1,3 +1,5 @@
+from datetime import timedelta
+from django.utils import timezone
 from rest_framework import serializers
 from .models import Transaction, Category
 from apps.wallets.serializers import WalletSerializer
@@ -49,7 +51,7 @@ class TransactionSerializer(serializers.ModelSerializer):
             if wallet == receiver_wallet:
                 raise serializers.ValidationError({"receiver_wallet": "Cannot transfer to the same wallet."})
                 
-        if receiver_wallet.user.id != receiver.id:
+            if receiver_wallet.user.id != receiver.id:
                 raise serializers.ValidationError({"receiver_wallet": "The selected receiver wallet does not belong to the selected receiver."})
                 
         # Risk assessment integration

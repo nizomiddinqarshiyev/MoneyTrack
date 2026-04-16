@@ -40,3 +40,17 @@ class WalletSerializer(serializers.ModelSerializer):
 
 class TopUpSerializer(serializers.Serializer):
     amount = serializers.DecimalField(max_digits=20, decimal_places=2, min_value=Decimal('0.01'))
+
+class WalletSearchSerializer(serializers.ModelSerializer):
+    full_name = serializers.CharField(source='user.full_name', read_only=True)
+    masked_number = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Wallet
+        fields = ('id', 'full_name', 'masked_number', 'card_type')
+
+    @extend_schema_field(str)
+    def get_masked_number(self, obj):
+        if obj.card_number and len(obj.card_number) >= 12:
+            return f"{obj.card_number[:4]} **** **** {obj.card_number[-4:]}"
+        return obj.card_number
